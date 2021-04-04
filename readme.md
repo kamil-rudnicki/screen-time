@@ -16,13 +16,14 @@ yarn make
 
 ### Todo today
 
-- autoupdate
+- (react) splash screen
+- (react) login / logout / register / preferences / version / help / copywright / refresh
+
 
 ### Todo later
 
-- (react) login / logout / register / preferences / version / help / copywright / refresh
 - (react) beutiful statistics
-- (react) splash screen
 - (react) widget for windows
 - try on other computers (win, macos)
+- autoupdate
 - debugging /Users/kamil/.npm-global/bin/electron-forge start --inspect-electron
