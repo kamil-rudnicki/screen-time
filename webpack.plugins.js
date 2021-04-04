@@ -1,13 +1,16 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
+const assets = [ 'assets', 'css', 'fonts' ];
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
-  new CopyWebpackPlugin(
-    {
-      patterns: [
-        { from: 'src/assets', to: 'assets' },
-      ],
-    }  
-  )
+  new CopyPlugin({
+    patterns: [
+      { 
+        from: path.resolve(__dirname, 'src', 'assets'),
+        to: path.resolve(__dirname, '.webpack', 'assets'),
+      },
+    ],
+  }),
 ];

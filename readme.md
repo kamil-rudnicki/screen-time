@@ -2,25 +2,27 @@
 
 ## Run
 
+change path in TrayMenu.ts to tray icon in development env
 yarn start
 yarn lint
+
+## Build
+
+remove config.get from TrayMenu.ts
+
+yarn make
 
 ## Todo
 
 ### Todo today
 
+- autoupdate
+
 ### Todo later
 
-- clean eslint
-- make better support for tray icon on other computers
-- autoupdate
-- structure files and folders
-- login / logout
-- strict mode
-- try on other computers
-- better seconds counter
-- time from starting of the computer
-- beutiful statistics
-- log to file
-- autostart settings
+- (react) login / logout / register / preferences / version / help / copywright / refresh
+- (react) beutiful statistics
+- (react) splash screen
+- (react) widget for windows
+- try on other computers (win, macos)
 - debugging /Users/kamil/.npm-global/bin/electron-forge start --inspect-electron

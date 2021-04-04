@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
-import config from 'config';
-import { TrayMenu } from './electron/TrayMenu';
+import path from 'path';
+import TrayMenu from './TrayMenu';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
@@ -10,7 +10,6 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 const createWindow = (): void => {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
@@ -19,22 +18,19 @@ const createWindow = (): void => {
     },
   });
 
-  // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
 
 app.on('ready', () => {
-  app.dock.hide();
+  //app.dock.hide();
   app.trayMenu = new TrayMenu();
-  //createWindow();
+  createWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// explicitly with Cmd and Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

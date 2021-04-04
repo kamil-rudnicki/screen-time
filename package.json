@@ -1,8 +1,8 @@
 {
-  "name": "time2",
-  "productName": "time2",
+  "name": "screen-time",
+  "productName": "Screen Time",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Total time worked.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -19,7 +19,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "src/assets/512.icns"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -51,8 +53,8 @@
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
                 {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.ts",
+                  "html": "./src/app/stats/index.html",
+                  "js": "./src/app/stats/renderer.ts",
                   "name": "main_window"
                 }
               ]
@@ -70,11 +72,13 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+    "@types/auto-launch": "^5.0.1",
     "@types/config": "0.0.38",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
+    "coffee-script": "^1.12.7",
     "css-loader": "^4.2.1",
     "electron": "12.0.2",
     "eslint": "^7.6.0",
@@ -91,9 +95,12 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "auto-launch": "^5.0.5",
     "axios": "^0.21.1",
     "config": "^3.3.6",
     "copy-webpack-plugin": "^6.2.1",
+    "dayjs": "^1.10.4",
+    "electron-log": "^4.3.2",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
