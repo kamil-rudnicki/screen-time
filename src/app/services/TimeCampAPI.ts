@@ -18,6 +18,24 @@ export default class TimeCampAPI {
     });
   }
 
+  public updateApiKey(apiKey: string): void {
+    this.apiKey = apiKey;
+    this.instance.defaults.headers.common['Authorization'] = apiKey;
+    this.instance.defaults.headers['Authorization'] = apiKey;
+  }
+
+  async checkAPIToken(): Promise<boolean> {
+    try {
+      const response = await this.instance.get('/me');
+      if (response.data.email) {
+        return true;
+      }
+    } catch (error) {
+      return false;
+    }
+    return false;
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-types
   async getComputerActivities(date: string): Promise<any[]> {
     try {

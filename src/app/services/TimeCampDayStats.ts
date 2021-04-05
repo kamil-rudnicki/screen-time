@@ -16,6 +16,11 @@ export default class TimeCampDayStats {
     this.api = new TimeCampAPI(apiKey);
   }
 
+  public updateApiKey(apiKey: string): void {
+    this.apiKey = apiKey;
+    this.api.updateApiKey(apiKey);
+  }
+
   public async getTotalComputerTime(date: string): Promise<number> {
     const computerActivities = await this.api.getComputerActivities(date);
     let totalTime = 0;

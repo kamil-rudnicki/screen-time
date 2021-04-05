@@ -7,7 +7,7 @@ let preferencesWindow: BrowserWindow;
 
 ipcMain.on('change-autostart', (event, arg) => {
   const autoLaunch = new AutoLaunch({
-    name: 'Screen Time',
+    name: app.getName(),
     path: app.getPath('exe'),
   });
   if (arg) autoLaunch.enable();
@@ -16,7 +16,7 @@ ipcMain.on('change-autostart', (event, arg) => {
 
 ipcMain.on('settings-loaded', () => {
   const autoLaunch = new AutoLaunch({
-    name: 'Screen Time',
+    name: app.getName(),
     path: app.getPath('exe'),
   });
   autoLaunch.isEnabled().then((isEnabled) => {
@@ -26,7 +26,7 @@ ipcMain.on('settings-loaded', () => {
 
 const createPreferencesWindow = (): BrowserWindow => {
   const mainWindow = new BrowserWindow({
-    height: 440,
+    height: 400,
     width: 370,
     maxHeight: 800,
     maxWidth: 600,
@@ -34,6 +34,7 @@ const createPreferencesWindow = (): BrowserWindow => {
     minWidth: 300,
     minimizable: false,
     maximizable: false,
+    titleBarStyle: 'hiddenInset',
     title: `Preferences - ${app.getName()}`,
     webPreferences: {
       nodeIntegration: true,
@@ -42,7 +43,7 @@ const createPreferencesWindow = (): BrowserWindow => {
     },
   });
 
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadURL(`${MAIN_WINDOW_WEBPACK_ENTRY}#preferences`);
   // mainWindow.webContents.openDevTools();
 
   preferencesWindow = mainWindow;

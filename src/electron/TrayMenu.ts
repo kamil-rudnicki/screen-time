@@ -3,16 +3,18 @@ import {
   Tray,
   Menu,
   nativeImage,
+  ipcMain,
   MenuItemConstructorOptions,
 } from 'electron';
-import config from 'config';
 import log from 'electron-log';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import utc from 'dayjs/plugin/utc';
-import createPreferencesWindow from '../electron/PreferencesWindow';
+import Store from 'electron-store';
+import createPreferencesWindow from './PreferencesWindow';
 import toTimeString from '../app/services/DateTimeHelpers';
-import TimeCampService from '../app/services/TimeCampDayStats';
+import TimeCampDayStats from '../app/services/TimeCampDayStats';
+import createMainWindow from './MainWindow';
 
 export default class TrayMenu {
   public readonly tray: Tray;
@@ -25,11 +27,31 @@ export default class TrayMenu {
 
   private currentDay: string;
 
+  private store: Store;
+
+  private timecampService: TimeCampDayStats;
+
   constructor() {
     this.tray = new Tray(this.createNativeImage());
     this.tray.setToolTip('Screen time today.');
-    this.init();
+
     this.currentDay = dayjs().format('YYYY-MM-DD');
+
+    this.store = new Store({ encryptionKey: 'jf2n3Kr3h' });
+
+    this.timecampService = new TimeCampDayStats(this.store.get('apiToken'));
+
+    if (this.store.get('apiToken') === '' || this.store.get('apiToken') === undefined) {
+      createMainWindow();
+    }
+
+    ipcMain.on('apiToken-changed', (event, arg) => {
+      this.store.set('apiToken', arg);
+      this.timecampService.updateApiKey(arg);
+      this.refreshTotalTimeFromAPI();
+    });
+
+    this.init();
   }
 
   private tick(): void {
@@ -39,8 +61,7 @@ export default class TrayMenu {
 
   private async refreshTotalTimeFromAPI() {
     const todayDate = new Date().toISOString().slice(0, 10);
-    const timecamp = new TimeCampService(config.get('timecampApiKey')); // config.get('timecampApiKey')
-    const time = await timecamp.getTotalComputerTime(todayDate);
+    const time = await this.timecampService.getTotalComputerTime(todayDate);
     if (time > this.lastTodayTotalTimeFromAPI) {
       this.lastTodayTotalTimeFromAPI = time;
       this.secondsToday = time;
@@ -56,11 +77,11 @@ export default class TrayMenu {
     let from: string;
     let dur2: string;
     let screenTime: string;
-    if (timecamp.startTime) {
+    if (this.timecampService.startTime) {
       dayjs.extend(duration);
       dayjs.extend(utc);
-      from = timecamp.startTime.format('HH:mm a');
-      const dur = dayjs.duration(dayjs().diff(timecamp.startTime));
+      from = this.timecampService.startTime.format('HH:mm a');
+      const dur = dayjs.duration(dayjs().diff(this.timecampService.startTime));
       dur2 = dayjs.utc(dur.asMilliseconds()).format('HH:mm');
 
       screenTime = dayjs.utc(this.secondsToday * 1000).format('HH:mm');
@@ -114,7 +135,7 @@ export default class TrayMenu {
       {
         label: 'Stats...',
         type: 'normal',
-        click: () => app.quit(),
+        click: () => createMainWindow(),
       },
       {
         type: 'separator',

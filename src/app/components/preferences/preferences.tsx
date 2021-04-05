@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { remote, ipcRenderer } from 'electron';
-import '../scss/app.scss';
 
 const appVersion = remote.app.getVersion();
 const appName = remote.app.getName();
 
-function SettingsComponent() {
+function PreferencesComponent() {
   const [checkedOne, setCheckedOne] = useState(false);
   const updateOne = function () {
     const checked = !checkedOne;
@@ -15,7 +14,8 @@ function SettingsComponent() {
 
   function handleClick(e: any) {
     e.preventDefault();
-    ipcRenderer.send('anything-asynchronous', 'ping');
+    ipcRenderer.send('apiToken-changed', '');
+    remote.getCurrentWindow().close();
   }
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function SettingsComponent() {
 
   return (
     <div className="container">
-      <br />
+      <div className="dragabble" />
       <div className="row">
         <div className="col-sm-12">
           <h2>Preferences</h2>
@@ -64,4 +64,4 @@ function SettingsComponent() {
   );
 }
 
-export default SettingsComponent;
+export default PreferencesComponent;

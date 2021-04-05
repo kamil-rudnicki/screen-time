@@ -16,14 +16,17 @@ yarn make
 
 ### Todo today
 
-- (react) splash screen
-- (react) login / logout / register / preferences / version / help / copywright / refresh
-
+- try on other computers
+- autoupdate
 
 ### Todo later
 
+- if no data
 - (react) beutiful statistics
 - (react) widget for windows
-- try on other computers (win, macos)
-- autoupdate
-- debugging /Users/kamil/.npm-global/bin/electron-forge start --inspect-electron
+- make consts for strings
+- remember window positions
+- fix eslint errors
+- strict mode for typescript
+- better login state
+- in preferences make login button if not logged in showing main window
