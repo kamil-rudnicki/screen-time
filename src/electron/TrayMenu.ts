@@ -10,7 +10,7 @@ import log from 'electron-log';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import utc from 'dayjs/plugin/utc';
-import AutoLaunch from 'auto-launch';
+import createPreferencesWindow from '../electron/PreferencesWindow';
 import toTimeString from '../app/services/DateTimeHelpers';
 import TimeCampService from '../app/services/TimeCampDayStats';
 
@@ -29,6 +29,7 @@ export default class TrayMenu {
     this.tray = new Tray(this.createNativeImage());
     this.tray.setToolTip('Screen time today.');
     this.init();
+    this.currentDay = dayjs().format('YYYY-MM-DD');
   }
 
   private tick(): void {
@@ -54,22 +55,19 @@ export default class TrayMenu {
 
     let from: string;
     let dur2: string;
+    let screenTime: string;
     if (timecamp.startTime) {
       dayjs.extend(duration);
       dayjs.extend(utc);
-      from = timecamp.startTime.format('HH:mm');
+      from = timecamp.startTime.format('HH:mm a');
       const dur = dayjs.duration(dayjs().diff(timecamp.startTime));
       dur2 = dayjs.utc(dur.asMilliseconds()).format('HH:mm');
+
+      screenTime = dayjs.utc(this.secondsToday * 1000).format('HH:mm');
     }
 
-    const autoLaunch = new AutoLaunch({
-      name: 'Screen Time',
-      path: app.getPath('exe'),
-    });
-    autoLaunch.isEnabled().then((isEnabled) => {
-      const menu = this.createMenu(from, dur2, isEnabled);
-      this.tray.setContextMenu(menu);
-    });
+    const menu = this.createMenu(from, dur2, screenTime);
+    this.tray.setContextMenu(menu);
   }
 
   private async init() {
@@ -90,22 +88,21 @@ export default class TrayMenu {
 
   // eslint-disable-next-line class-methods-use-this
   private createMenu(totalTime: string | undefined, clockedIn: string | undefined,
-    autolunch: boolean): Menu {
+    screenTime: string | undefined): Menu {
     const arr: MenuItemConstructorOptions[] = [];
 
     if (totalTime !== undefined) {
       arr.push(
         {
-          label: `Clocked in: ${totalTime}`,
+          label: `Screen Time: ${screenTime}h`,
           type: 'normal',
           enabled: false,
-          toolTip: 'Start time of the computer.',
         },
         {
-          label: `Duration: ${clockedIn}`,
+          label: `Clocked In: ${totalTime} (${clockedIn}h)`,
           type: 'normal',
           enabled: false,
-          toolTip: 'Duration from clock in until now.',
+          toolTip: 'Start time of the computer and duration from clock in until now.',
         },
         {
           type: 'separator',
@@ -125,20 +122,7 @@ export default class TrayMenu {
       {
         label: 'Preferences...',
         type: 'normal',
-        click: () => app.quit(),
-      },
-      {
-        label: 'Launch Screen Time at Login',
-        type: 'checkbox',
-        checked: autolunch,
-        click() {
-          const autoLaunch = new AutoLaunch({
-            name: 'Screen Time',
-            path: app.getPath('exe'),
-          });
-          if (!autolunch) autoLaunch.enable();
-          else autoLaunch.disable();
-        },
+        click: () => createPreferencesWindow(),
       },
       {
         type: 'separator',
