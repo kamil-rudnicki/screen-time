@@ -68,6 +68,7 @@ export default class TrayMenu {
       log.info(`Refreshed total time from API ${time}`);
     } else if (this.currentDay !== dayjs().format('YYYY-MM-DD')) {
       this.secondsToday = 0;
+      this.lastTodayTotalTimeFromAPI = 0;
       this.currentDay = dayjs().format('YYYY-MM-DD');
       log.info('Resetting current day');
     } else {
@@ -80,11 +81,19 @@ export default class TrayMenu {
     if (this.timecampService.startTime) {
       dayjs.extend(duration);
       dayjs.extend(utc);
-      from = this.timecampService.startTime.format('HH:mm a');
+      from = this.timecampService.startTime.format('HH:mma');
       const dur = dayjs.duration(dayjs().diff(this.timecampService.startTime));
       dur2 = dayjs.utc(dur.asMilliseconds()).format('HH:mm');
 
       screenTime = dayjs.utc(this.secondsToday * 1000).format('HH:mm');
+
+      if (dur.asMilliseconds() / 1000 < this.lastTodayTotalTimeFromAPI) {
+        this.secondsToday = 0;
+        this.lastTodayTotalTimeFromAPI = 0;
+        this.currentDay = dayjs().format('YYYY-MM-DD');
+      }
+
+      //app.getWin.webContents.send('', isEnabled);
     }
 
     const menu = this.createMenu(from, dur2, screenTime);
@@ -120,11 +129,22 @@ export default class TrayMenu {
           enabled: false,
         },
         {
-          label: `Clocked In: ${totalTime} (${clockedIn}h)`,
+          label: `From The Start: ${clockedIn}h`,
+          type: 'normal',
+          enabled: false,
+        },
+        {
+          label: `Clocked In: ${totalTime}`,
           type: 'normal',
           enabled: false,
           toolTip: 'Start time of the computer and duration from clock in until now.',
         },
+        /*{
+          label: `Last Update: ${dayjs().format('HH:mma')}`,
+          type: 'normal',
+          enabled: false,
+          toolTip: 'Start time of the computer and duration from clock in until now.',
+        },*/
         {
           type: 'separator',
         },
@@ -135,6 +155,12 @@ export default class TrayMenu {
       {
         label: 'Stats...',
         type: 'normal',
+        click: () => createMainWindow(),
+      },
+      {
+        label: 'Add Time...',
+        type: 'normal',
+        accelerator: process.platform === 'darwin' ? 'Alt+Cmd+I' : 'Alt+Ctrl+I',
         click: () => createMainWindow(),
       },
       {
@@ -151,6 +177,7 @@ export default class TrayMenu {
       {
         label: 'Quit',
         type: 'normal',
+        accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Alt+Shift+Q', // todo: for other platforms
         click: () => app.quit(),
       },
     );

@@ -12,15 +12,20 @@ remove config.get from TrayMenu.ts
 
 yarn make
 
+/Users/kamil/.npm-global/bin/electron-forge make --platform=win32
+
 ## Todo
 
 ### Todo today
 
-- try on other computers
-- autoupdate
+- okienko do dodania nowego wpisu czasu szybko (w tym poprzedni wpis czasu)
+- realne dodanie takiego wpisu czasu
+- bardziej inteligentne parsowanie
 
 ### Todo later
 
+- try on other computers
+- autoupdate
 - if no data
 - (react) beutiful statistics
 - (react) widget for windows

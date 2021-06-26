@@ -20,8 +20,8 @@ export default class TimeCampAPI {
 
   public updateApiKey(apiKey: string): void {
     this.apiKey = apiKey;
-    this.instance.defaults.headers.common['Authorization'] = apiKey;
-    this.instance.defaults.headers['Authorization'] = apiKey;
+    this.instance.defaults.headers.common.Authorization = apiKey;
+    this.instance.defaults.headers.Authorization = apiKey;
   }
 
   async checkAPIToken(): Promise<boolean> {
@@ -42,6 +42,20 @@ export default class TimeCampAPI {
       const response = await this.instance.get(`/activity?dates[]=${date}`);
       return response.data;
     } catch (error) {
+      return undefined;
+    }
+  }
+
+  async createTimeEntry(date: string, from: string, to: string, note: string): Promise<any[]> {
+    try {
+      const response = await this.instance.post('/entries', {
+        date,
+        start: from,
+        note,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
       return undefined;
     }
   }

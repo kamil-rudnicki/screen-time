@@ -7,7 +7,9 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 app.on('ready', () => {
-  app.dock.hide();
+  if (process.platform === 'darwin') {
+    app.dock.hide();
+  }
   // @ts-expect-error don't know why TS shows that trayMenu is not available
   app.trayMenu = new TrayMenu();
   // preferencesWindow = createWindow();

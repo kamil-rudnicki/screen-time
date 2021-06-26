@@ -32,6 +32,7 @@ const createPreferencesWindow = (): BrowserWindow => {
     maxWidth: 600,
     minHeight: 300,
     minWidth: 300,
+    frame: false,
     minimizable: false,
     maximizable: false,
     titleBarStyle: 'hiddenInset',

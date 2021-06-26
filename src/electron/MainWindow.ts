@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron';
 import AutoLaunch from 'auto-launch';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
@@ -17,6 +17,7 @@ const createMainWindow = (): BrowserWindow => {
     width: 490,
     minHeight: 200,
     minWidth: 200,
+    frame: false,
     minimizable: false,
     maximizable: false,
     titleBarStyle: 'hiddenInset',
@@ -33,5 +34,12 @@ const createMainWindow = (): BrowserWindow => {
 
   return mainWindow;
 };
+
+app.whenReady().then(() => {
+  globalShortcut.register('Alt+CommandOrControl+I', () => {
+    console.log('Electron loves global shortcuts!');
+    createMainWindow();
+  });
+});
 
 export default createMainWindow;

@@ -17,6 +17,23 @@ body ::selection {
   color: #fff;
 }
 
+.stats {
+  .stat {
+    background-color: #eee;
+    border-radius: 15px;
+    padding: 15px 15px 8px 18px;
+    margin-top: 20px;
+
+    h3 {
+      font-size: 15px;
+    }
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+    }
+  }
+}
+
 .welcome {
   line-height: 1.16667;
   font-weight: 600;
