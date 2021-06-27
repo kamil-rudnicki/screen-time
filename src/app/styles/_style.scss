@@ -80,3 +80,24 @@ body ::selection {
     font-weight: bold;
   }
 }
+
+.timeEntryNote {
+  .dragabble {
+    height: 9px;
+  }
+  input {
+    font-size: 19px;
+    border-color: transparent;
+    -webkit-app-region: drag;
+    &:focus {
+      outline-width: 0;
+      outline: none !important;
+      outline:none !important;
+      outline-width: 0 !important;
+      box-shadow: none;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      border-color: transparent;
+    }
+  }
+} 

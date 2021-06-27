@@ -111,99 +111,22 @@ function Stats() {
   useKeypress('Enter', async () => {
     const store = new Store({ encryptionKey: 'jf2n3Kr3h' });
     if (store.get('apiToken') !== '' && store.get('apiToken') !== undefined) {
-      const timecampAPI = new TimeCampAPI(store.get('apiToken') as string);
-      await timecampAPI.createTimeEntry(dayjs().format('YYYY-MM-DD'), `${from}:00`, `${to}:00`, `${note}`);
-      remote.getCurrentWindow().close();
+      if (note !== '') {
+        const timecampAPI = new TimeCampAPI(store.get('apiToken') as string);
+        await timecampAPI.createTimeEntry(dayjs().format('YYYY-MM-DD'), `${from}:00`, `${to}:00`, `${note}`);
+        remote.getCurrentWindow().close();
+      }
     } else {
       alert('You are not logged in.');
     }
   });
 
   return (
-  <div>
-    <div className="dragabble" />
-    <div className="container stats">
-      <h2>Create Quick Time Entry</h2>
-      <div className="row">
-        <div className="col-12">
-          <input className="form-control" placeholder="Time entry details..." onChange={event => setNote(event.target.value)} type="text" autoFocus />
-        </div>
-      </div>
-      <br />
-      <div className="row">
-        <div className="col-3">
-          <label className="form-label">From</label>
-          <input className="form-control" defaultValue={from} onChange={event => setFrom(event.target.value)} type="text" />
-        </div>
-        <div className="col-3">
-          <label className="form-label">To</label>
-          <input className="form-control" defaultValue={to} onChange={event => setTo(event.target.value)} type="text" />
-        </div>
-      </div>
-      <br />
-      <small>
-        <i>ESC - close, Enter - create time entry</i>
-        <br />
-        <br />
-        <b>Latest time entries:</b>
-        <br />
-        14:30 - 14:44 Testing new task<br />
-        14:30 - 14:44 Testing new task
-        <br />
-        <br />
-        <b>Suggested:</b>
-        <br />
-        14:30 - 14:44 Testing new task<br />
-        14:30 - 14:44 Testing new task
-      </small>
-
-
-      <br />
-      <br />
-      <div className="row justify-content-center d-none">
-        <div className="col-12">
-          <h1 className="">
-            Today - {date}
-          </h1>
-
-          <div className="row">
-            <div className="col-4">
-              <div className="stat">
-                <h3>Screen Time</h3>
-                <h2>{screenTime}</h2>
-              </div>
-            </div>
-            <div className="col-4">
-              <div className="stat">
-                <h3>Clocked In</h3>
-                <h2>{clockIn}</h2>
-              </div>
-            </div>
-            <div className="col-4">
-              <div className="stat">
-                <h3>Duration</h3>
-                <h2>{duration}</h2>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-12">
-              <div className="stat">
-                <h3>Deep Work</h3>
-                <Bar data={data2} options={options} />
-                <small>This data show current deep work indicator, when you work on computer. It is based how many times per hour you open e-mail or social media.</small>
-              </div>
-            </div>
-          </div>
-
-          <br />
-          <br />
-          <br />
-        </div>
-      </div>
+    <div className="timeEntryNote">
+      <div className="dragabble" />
+      <input className="form-control" placeholder="Create Quick Time Entry ⌚" onChange={(event) => setNote(event.target.value)} type="text" autoFocus />
+      
     </div>
-  </div>
   );
 }
 

@@ -5,6 +5,7 @@ import {
   nativeImage,
   ipcMain,
   MenuItemConstructorOptions,
+  shell,
 } from 'electron';
 import log from 'electron-log';
 import dayjs from 'dayjs';
@@ -153,15 +154,15 @@ export default class TrayMenu {
 
     arr.push(
       {
-        label: 'Stats...',
-        type: 'normal',
-        click: () => createMainWindow(),
-      },
-      {
-        label: 'Add Time...',
+        label: 'Quick Time Entry...',
         type: 'normal',
         accelerator: process.platform === 'darwin' ? 'Alt+Cmd+I' : 'Alt+Ctrl+I',
         click: () => createMainWindow(),
+      },
+      {
+        label: 'Open Timesheet...',
+        type: 'normal',
+        click: () => shell.openExternal('https://app.timecamp.com/app#/timesheets/timer?utm_source=screenTime&utm_medium=app&utm_campaign=screenTime'),
       },
       {
         type: 'separator',
@@ -169,13 +170,14 @@ export default class TrayMenu {
       {
         label: 'Preferences...',
         type: 'normal',
+        accelerator: process.platform === 'darwin' ? 'Cmd+,' : '',
         click: () => createPreferencesWindow(),
       },
       {
         type: 'separator',
       },
       {
-        label: 'Quit',
+        label: `Quit ${app.getName()}`,
         type: 'normal',
         accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Alt+Shift+Q', // todo: for other platforms
         click: () => app.quit(),
