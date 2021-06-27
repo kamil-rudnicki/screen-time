@@ -18,20 +18,29 @@ yarn make
 
 ### Todo today
 
-- okienko do dodania nowego wpisu czasu szybko (w tym poprzedni wpis czasu)
-- realne dodanie takiego wpisu czasu
-- bardziej inteligentne parsowanie
-
 ### Todo later
 
+- po naciśnięciu na szczegóły dodatkowe informacje
+- bardziej inteligentne parsowanie
+- mozliwosc wystartowania timera
 - try on other computers
 - autoupdate
+- szybsze ładowanie
 - if no data
 - (react) beutiful statistics
 - (react) widget for windows
 - make consts for strings
-- remember window positions
 - fix eslint errors
 - strict mode for typescript
 - better login state
 - in preferences make login button if not logged in showing main window
+
+### Other events
+
+start DSV
+start DSV 5m ago
+DSV 30m until now
+DSV from 13 to 13:42
+DSV 30m
+DSV from last time entry until now
+DSV from last time entry to 5min ago
