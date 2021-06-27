@@ -82,7 +82,7 @@ export default class TrayMenu {
     if (this.timecampService.startTime) {
       dayjs.extend(duration);
       dayjs.extend(utc);
-      from = this.timecampService.startTime.format('HH:mma');
+      from = this.timecampService.startTime.format('HH:mm a');
       const dur = dayjs.duration(dayjs().diff(this.timecampService.startTime));
       dur2 = dayjs.utc(dur.asMilliseconds()).format('HH:mm');
 
@@ -125,12 +125,12 @@ export default class TrayMenu {
     if (totalTime !== undefined) {
       arr.push(
         {
-          label: `Screen Time: ${screenTime}h`,
+          label: `Screen Time: ${screenTime} h`,
           type: 'normal',
           enabled: false,
         },
         {
-          label: `From The Start: ${clockedIn}h`,
+          label: `From The Start: ${clockedIn} h`,
           type: 'normal',
           enabled: false,
         },

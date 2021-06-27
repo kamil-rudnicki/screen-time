@@ -19,21 +19,38 @@ function Stats(): JSX.Element {
     if (store.get('apiToken') !== '' && store.get('apiToken') !== undefined) {
       if (note !== '') {
         const Sherlock = require('sherlockjs');
-        Sherlock._setNow(dayjs().startOf('day').toDate());
+        // Sherlock._setNow(dayjs().startOf('day').toDate());
         const sherlocked = Sherlock.parse(note);
 
-        const startDate = sherlocked.startDate ?? Date.now();
-        const endDate = sherlocked.endDate ?? Date.now();
+        let startDate = sherlocked.startDate ?? Date.now();
+        let endDate = sherlocked.endDate ?? Date.now();
 
-        alert(`${sherlocked.eventTitle} \n ${dayjs(startDate).format('YYYY-MM-DD HH:mm:ss')} \n ${dayjs(endDate).format('HH:mm:ss')}`);
+        if (endDate < startDate) {
+          const tempDate = endDate;
+          endDate = startDate;
+          startDate = tempDate;
+        }
+
+        let taskId = 0;
+        let tagId = 0;
+        const lowerCaseTitle = sherlocked.eventTitle.toLowerCase();
+
+        if (lowerCaseTitle.includes('DSV'.toLowerCase())) {
+          taskId = 77105145;
+          tagId = 36;
+        }
 
         const timecampAPI = new TimeCampAPI(store.get('apiToken') as string);
         await timecampAPI.createTimeEntry(
-          dayjs(startDate).format('YYYY-MM-DD'),
+          dayjs().format('YYYY-MM-DD'),
           dayjs(startDate).format('HH:mm:ss'),
           dayjs(endDate).format('HH:mm:ss'),
           sherlocked.eventTitle,
+          taskId,
+          tagId,
         );
+
+        alert(`${sherlocked.eventTitle} \nfrom: ${dayjs(startDate).format('HH:mm:ss')} \nto: ${dayjs(endDate).format('HH:mm:ss')}`);
 
         remote.getCurrentWindow().close();
       }

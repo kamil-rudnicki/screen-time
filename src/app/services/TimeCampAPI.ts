@@ -46,12 +46,17 @@ export default class TimeCampAPI {
     }
   }
 
-  async createTimeEntry(date: string, from: string, to: string, note: string): Promise<any[]> {
+  async createTimeEntry(date: string, from: string, to: string, note: string, taskId: number, tagId: number): Promise<any[]> {
     try {
       const response = await this.instance.post('/entries', {
         date,
         start: from,
+        end: to,
         note,
+        task_id: taskId,
+        tags: [{
+          tagId,
+        }],
       });
       return response.data;
     } catch (error) {

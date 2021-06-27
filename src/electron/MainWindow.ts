@@ -21,10 +21,12 @@ const createMainWindow = (): BrowserWindow => {
     minHeight: 60,
     minWidth: 200,
     frame: false,
+    // backgroundColor: '#111111',
     // minimizable: false,
     // maximizable: false,
     // titleBarStyle: 'hidden',
     title: `${app.getName()}`,
+    opacity: 0.95,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -32,6 +34,18 @@ const createMainWindow = (): BrowserWindow => {
     },
   };
   Object.assign(opts, store.get('winBounds'));
+
+  if (store.get('apiToken') === undefined || store.get('apiToken') === '') {
+    Object.assign(opts, {
+      width: 490,
+      height: 490,
+    });
+  } else {
+    Object.assign(opts, {
+      width: 490,
+      height: 60,
+    });
+  }
 
   const mainWindow = new BrowserWindow(opts);
 

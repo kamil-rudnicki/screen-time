@@ -55,7 +55,7 @@ function PreferencesComponent() {
               <h6>Info</h6>
               Version: {appVersion}
               <br />
-              Copyright (c) 2021 TimeCamp Inc.
+              Copyright © 2021 by Kamil Rudnicki
             </li>
           </ul>
         </div>

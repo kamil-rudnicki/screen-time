@@ -30,8 +30,7 @@ function SplashScreen() {
               <div className="col-9 text-center">
                 <div className="welcome splash_screen">
                   <h1 className="text-center">
-                    Welcome to
-                    {appName}
+                    Welcome to {appName}
                   </h1>
                   <h5>
                     People love flexible working hours, when working remotely.

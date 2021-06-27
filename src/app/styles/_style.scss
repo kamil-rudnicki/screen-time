@@ -81,16 +81,26 @@ body ::selection {
   }
 }
 
+body {
+  //background-color: rgb(20,20,20);
+}
+
 .timeEntryNote {
+  height: 60px;
+  // background-color: rgb(20,20,20);
   .dragabble {
     height: 9px;
   }
   input {
+    // color: rgba(255,255,255,0.8) !important;
+    // background-color: transparent;
     font-size: 19px;
+    padding-left: 20px;
     border-color: transparent;
     -webkit-app-region: drag;
     &:focus {
       outline-width: 0;
+      background-color: transparent;
       outline: none !important;
       outline:none !important;
       outline-width: 0 !important;
